@@ -28,6 +28,8 @@ class ProductsAdapter(private val products : ArrayList<Product>) :
                 false
             )
         )
+
+        // TODO based on availibility change the ui
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -65,6 +67,13 @@ class ProductsAdapter(private val products : ArrayList<Product>) :
         Intent(context, ProductDetailActivity::class.java).apply {
             putExtra(Constants.PRODUCT_PUT_EXTRA_KEY, product)
             context.startActivity(this)
+        }
+    }
+
+    private inner class ViewUnavailableViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        fun bind(position: Int) {
+
         }
     }
 }

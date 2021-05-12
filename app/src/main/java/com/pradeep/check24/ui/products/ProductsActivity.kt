@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.backbase.assignment.util.Status
+import com.google.android.material.snackbar.Snackbar
 import com.pradeep.check24.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,6 +34,14 @@ class ProductsActivity : AppCompatActivity() {
 
         setupProductObserver()
         setupProductList()
+        setupPullToRefresh()
+    }
+
+    private fun setupPullToRefresh() {
+        swipe.setOnRefreshListener {
+            viewModel.getProducts()
+        }
+
     }
 
     private fun setupProductList() {
@@ -53,18 +62,28 @@ class ProductsActivity : AppCompatActivity() {
                 when (resource.status) {
                     Status.SUCCESS -> {
                         Log.d(TAG, "${resource.data}")
+                        swipe.isRefreshing = false
                         resource.data?.products?.let { productAdapter.updateList(it) }
                     }
 
                     Status.ERROR -> {
                         Log.d(TAG, "${resource.status}")
+                        swipe.isRefreshing = false
+                        main_const_layout.snakeBar(resource.message.toString(), Snackbar.LENGTH_LONG)
                     }
 
                     Status.LOADING -> {
                         Log.d(TAG, "${resource.status}")
+                        swipe.isRefreshing = true
+
                     }
                 }
             }
         })
     }
+
+    fun View.snakeBar(message: String, duration: Int = Snackbar.LENGTH_LONG){
+        Snackbar.make(this, message, duration).show()
+    }
+
 }
