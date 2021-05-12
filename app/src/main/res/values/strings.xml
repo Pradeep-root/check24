@@ -8,4 +8,7 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="favorite">Vormerken</string>
     <string name="no_internet_connection">No Internet connection, Please check</string>
+    <string name="product_detail">Product Details</string>
+    <string name="product_list">Products</string>
+
 </resources>
